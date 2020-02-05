@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 
+// Web Apps Firebase config
 const config = {
   apiKey: "AIzaSyD0_iLSieVAyXYLShSEYKUVUjX-PKl-oQ4",
   authDomain: "gym-app-2310d.firebaseapp.com",
