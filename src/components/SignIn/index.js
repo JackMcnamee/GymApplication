@@ -6,7 +6,7 @@ import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes'; 
 
-const SignIn = () => (
+const SignInPage = () => (
   <div>
     <h1>SignIn</h1>
     <SignInForm />
