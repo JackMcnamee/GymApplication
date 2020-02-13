@@ -1,5 +1,3 @@
-// Home Page
-
 import React from 'react';
 
 const Home = () => (
