@@ -1,12 +1,12 @@
 import React from 'react';
 import '../../index.css';
 
-const Account = () => (
+const Store = () => (
   <div id="outer">
     <div id="inner">
-    <h1>Your Account</h1>
+    <h1>Store</h1>
     </div>
   </div>
 );
 
-export default Account;
+export default Store;

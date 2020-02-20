@@ -11,3 +11,37 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#inner{
+  width:50%;
+  display: table;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#outer{
+  width:100%;
+}
+
+#button{
+  width: 25%;
+  background-color: white;
+  color: black;
+  border: 2px solid #e7e7e7;
+}
+#button:hover {
+  background-color: #e7e7e7;
+}
+
+#text {
+  width: 45%;
+}
+
+#tab {
+  color: black;
+  background-color: blue;
+}
+
+#tab:hover {
+  background-color: brown;
+}

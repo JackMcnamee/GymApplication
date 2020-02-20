@@ -1,11 +1,11 @@
 import React from 'react';
-
 import { withFirebase } from '../Firebase';
+import '../../index.css';
+import { FlatButton } from 'material-ui';
 
 const SignOutButton = ({ firebase }) => (
-  <button type="button" onClick={firebase.doSignOut}>
-    SignOut
-  </button>
+  <FlatButton label="Sign Out" onClick={firebase.doSignOut} 
+      style={{ float: 'right' }} />
 );
 
 export default withFirebase(SignOutButton);

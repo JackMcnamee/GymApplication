@@ -1,6 +1,8 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 
+import SignInPage from '../SignIn';
+
 // Web Apps Firebase config
 const config = {
   apiKey: "AIzaSyD0_iLSieVAyXYLShSEYKUVUjX-PKl-oQ4",
@@ -26,7 +28,8 @@ class Firebase {
     doSignInWithEmailAndPassword = (email, password) =>
         this.auth.signInWithEmailAndPassword(email, password);
 
-    doSignOut = () => this.auth.signOut();
+    doSignOut = () => 
+        this.auth.signOut();
 
     doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 

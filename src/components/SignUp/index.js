@@ -3,14 +3,19 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
+import { SignInLink } from '../SignIn';
+import '../../index.css';
 
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
 const SignUpPage = () => (
-  <div>
-    <h1>SignUp</h1>
-    <SignUpForm />
+  <div id="outer">
+    <div id="inner">
+      <h1>Sign Up</h1>
+      <SignUpForm />
+      <SignInLink />
+    </div>
   </div>
 );
 
@@ -69,35 +74,20 @@ class SignUpFormBase extends Component {
 
     return (
       <form onSubmit={this.onSubmit}>
-        <input
-          name="username"
-          value={username}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Full Name"
-        />
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm Password"
-        />
-        <button disabled={isInvalid} type="submit">Sign Up</button>
+        <input name="username" value={username} onChange={this.onChange}
+          type="text" placeholder="Full Name" id="text" />
+        <br />
+        <input name="email" value={email} onChange={this.onChange}
+          type="text" placeholder="Email Address" id="text" />
+        <br />
+        <input name="passwordOne" value={passwordOne} onChange={this.onChange}
+          type="password" placeholder="Password" id="text" />
+        <br />
+        <input name="passwordTwo" value={passwordTwo} onChange={this.onChange}
+          type="password" placeholder="Confirm Password" id="text" />
+        <br />
+        <br />
+        <button disabled={isInvalid} type="submit" id="button">Sign Up</button>
 
         {error && <p>{error.message}</p>}
       </form>

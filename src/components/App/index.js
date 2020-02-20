@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, } from 'react-router-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import Navigation from '../Navigation';
 import LandingPage from '../Landing';
@@ -9,26 +10,34 @@ import PasswordForgetPage from '../PasswordForget';
 import HomePage from '../Home';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
+import ClassesPage from '../Classes';
+import StorePage from '../Store';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
 const App = () => (
-  <Router>
-    <div>
-      <Navigation />
+  <MuiThemeProvider>
+    <Router>
+      <div>
+        <Navigation />
 
-      <hr/>
+        <hr />
 
-      <Route exact path={ROUTES.LANDING} component={LandingPage} />
-      <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
-      <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
-      <Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
-      <Route exact path={ROUTES.HOME} component={HomePage} />
-      <Route exact path={ROUTES.ACCOUNT} component={AccountPage}/>
-      <Route exact path={ROUTES.ADMIN} component={AdminPage} />
-    </div>
-  </Router>
+        
+        <Route exact path={ROUTES.HOME} component={HomePage} />
+        {/*<Route exact path={ROUTES.LANDING} component={LandingPage} />*/}
+        <Route exact path={ROUTES.SIGN_UP} component={SignUpPage} />
+        <Route exact path={ROUTES.SIGN_IN} component={SignInPage} />
+        <Route exact path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
+        <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
+        <Route exact path={ROUTES.CLASSES} component={ClassesPage} />
+        <Route exact path={ROUTES.STORE} component={StorePage} />
+        <Route exact path={ROUTES.ADMIN} component={AdminPage} />
+      </div>
+    </Router>
+  </MuiThemeProvider>
+
 );
 
 

@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import {compose } from 'recompose';
 
+import '../../index.css';
 import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes'; 
 
 const SignInPage = () => (
-  <div>
-    <h1>Sign In</h1>
-    <SignInForm />
-    <SignUpLink />
+  <div id="outer">
+    <div id="inner">
+      <h1>Sign In</h1>
+      <SignInForm />
+      <SignUpLink />
+    </div>
   </div>
 );
 
@@ -56,19 +59,29 @@ class SignInFormBase extends Component {
       <form onSubmit={this.onSubmit}>
         <input name="email" value={email}
             onChange={this.onChange} type="text"
-            placeholder="Email Address" />
+            placeholder="Email Address" id="text"/>
+        <br />
         <input name="password" value={password}
             onChange={this.onChange} type="password"
-            placeholder="password" />
-        <button disabled={isInvalid} type="submit">
+            placeholder="password" id="text"/>
+        <br />
+        <br />
+        <button disabled={isInvalid} type="submit" id="button">
           Sign In
         </button>
+        
 
         {error && <p>{error.message}</p>}
       </form>
     )
   }
 } // SignInFormBase
+
+const SignInLink = () => (
+  <p>
+    Have an account? <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+  </p>
+);
 
 const SignInForm = compose(
   withRouter,
@@ -77,4 +90,4 @@ const SignInForm = compose(
 
 export default SignInPage;
 
-export {SignInForm};
+export {SignInForm, SignInLink};
