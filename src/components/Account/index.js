@@ -11,7 +11,6 @@ const Account = () => (
     <h3>Want to reset your password?</h3>
     <PasswordChangeForm />
     <PasswordForgetLink />
-    
     </div>
   </div>
 );
