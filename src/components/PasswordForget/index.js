@@ -5,6 +5,9 @@ import { withFirebase } from '../Firebase';
 import '../../index.css';
 import * as ROUTES from '../../constants/routes';
 
+// Here the user can reset their password by providing their email
+
+// password forget page
 const PasswordForgetPage = () => (
   <div id="outer">
     <div id="inner">
@@ -16,6 +19,7 @@ const PasswordForgetPage = () => (
   </div>
 );
 
+// resets state after a successful input
 const INITIAL_STATE = {
   email: '',
   error: null,
@@ -28,6 +32,7 @@ class PasswordForgetFormBase extends Component {
     this.state = { ...INITIAL_STATE };
   }
 
+  // Firebase authentication API used to reset password
   onSubmit = event => {
     const { email } = this.state;
     this.props.firebase
@@ -41,13 +46,18 @@ class PasswordForgetFormBase extends Component {
     event.preventDefault();
   };
 
+  // update the values input by user in the local state
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
 
   render() {
     const { email, error } = this.state;
+
+    // validation
     const isInvalid = email === '';
+
+    // inputs for user to reset password
     return (
       <form onSubmit={this.onSubmit}>
         <input
@@ -67,6 +77,7 @@ class PasswordForgetFormBase extends Component {
   }
 }
 
+// redirects to password forget page
 const PasswordForgetLink = () => (
   <p>
     <Link to={ROUTES.PASSWORD_FORGET}>Forgot Password?</Link>

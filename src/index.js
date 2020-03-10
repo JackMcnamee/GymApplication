@@ -5,6 +5,9 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import Firebase, { FirebaseContext } from './components/Firebase';
 
+// Ensures that firebase is only instatiated once
+// allows all components to access the firebase instance
+
 ReactDOM.render(
     <FirebaseContext.Provider value={new Firebase()}>
         <App />

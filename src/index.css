@@ -13,14 +13,50 @@ code {
 }
 
 #inner{
-  width:50%;
+  width: 50%;
   display: table;
   margin: 0 auto;
   text-align: center;
 }
 
 #outer{
-  width:100%;
+  width: 100%;
+}
+
+#calendar{
+  width: 100%;
+  height: 500pt;
+  margin: auto;
+  text-align: center;
+}
+
+#store {
+  width: 75%;
+  text-align: center;
+  display: table;
+  margin: 0 auto;
+}
+
+#itemTitle {
+  font-size: large;
+  font-weight: bold;
+  font-style: oblique;
+}
+
+#itemDesc {
+  font-size: medium;
+  font-weight: lighter;
+  font-style: normal;
+}
+
+#itemImg {
+  width: 50%;
+}
+
+#itemPrice {
+  font-size: medium;
+  font-weight: lighter;
+  font-style: normal;
 }
 
 #button{

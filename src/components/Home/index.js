@@ -1,6 +1,8 @@
 import React from 'react';
 import '../../index.css';
 
+// Here is the home page of our application
+
 const Home = () => (
   <div id="inner">
     <h1>Home Page</h1>

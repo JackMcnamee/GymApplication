@@ -5,21 +5,24 @@ import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import { MuiThemeProvider } from 'material-ui/styles';
 import Tabs from 'react-bootstrap';
-
-import '../../index.css';
 import { AuthUserContext } from '../Session';
 import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
+import '../../index.css';
+
+// Navigation of our gym application is set up here
 
 const Navigation = () => (
   <div>
     <AuthUserContext.Consumer>
+      {/* If user authorized show NavigationAuth, else show NavigationNonAuth */}
       {authUser =>
           authUser ? <NavigationAuth /> : <NavigationNonAuth />}
     </AuthUserContext.Consumer>
   </div>
 );
 
+// what user views if they are signed in
 const NavigationAuth = () => ( 
   <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
     <div>
@@ -32,6 +35,9 @@ const NavigationAuth = () => (
       <Link to={ROUTES.CLASSES}>
         <RaisedButton label="Classes" style={{ backgroundcolor: '#ffff' }} />
       </Link>
+      <Link to={ROUTES.PERSONAL_TRAINER}>
+        <RaisedButton label="Book a Personal Trainer" style={{ backgroundcolor: '#ffff' }} />
+      </Link>
       <Link to={ROUTES.STORE}>
         <RaisedButton label="Store" style={{ backgroundcolor: '#ffff' }} />
       </Link>
@@ -40,10 +46,10 @@ const NavigationAuth = () => (
   </MuiThemeProvider>
 );
   
-
-const NavigationNonAuth = () => 
+// what user views if they are not signed in
+const NavigationNonAuth = () => (
   <MuiThemeProvider>
-    
+    <div>
       <Link to={ROUTES.HOME}>
         <RaisedButton label="Home" id="tab" />
       </Link> 
@@ -53,6 +59,8 @@ const NavigationNonAuth = () =>
       <Link to={ROUTES.SIGN_UP}>
         <RaisedButton label="Sign Up" id="tab" />
       </Link> 
+    </div>
   </MuiThemeProvider>
+);
 
 export default Navigation;

@@ -2,58 +2,52 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
-import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import '../../index.css';
 
+// The Classes page for our gym application
+// Here the user can view the class available at the gym
+// via a Calendar
+
+// set up the localizer by providing the moment Object
+// to the correct localizer.
 const localizer = momentLocalizer(moment);
 
 export default class Classes extends Component {
-
-  // allows user to set times for training sessions
-  // setDates = () => {
-  //   const events = []
-  //   this.props.events.map(event => {
-  //     return events.push({
-  //       start: new Date(event.start),
-  //       end: new Date(event.end),
-  //       title: '${event.name} with ${event.person}',
-  //       allDay: false
-  //     })
-  //   })
-  //   return events;
-  // }
-
   constructor(props){
     super(props);
 
     this.toggle = this.toggle.bind(this);
+
     this.state = {
-      popoverOpen: false
+      popoverOpen: true
     };
   
     const now = new Date();
-    //const EventCalendar = require('react-event-calendar');
+    // different classes available (inc title, date)
+    // could implement recurrenceRule to have classes automatically updated
     const events = [
       {
         id: 1,
         title: 'Weightlifting Session',
         start: new Date(2020, 1, 3, 19, 30, 0),
         end: new Date(2020, 1, 3, 20, 30, 0),
+        recurrenceRule: 'FREQ=DAILY;INTERVAL=1;COUNT=3'
       },
       {
         id: 2,
         title: 'Cardio Session',
         start: new Date(2020, 1, 4, 19, 30, 0),
         end: new Date(2020, 1, 4, 20, 30, 0),
-        description: 'This is a test description of an event',
+        recurrenceRule: 'FREQ=DAILY;INTERVAL=1;COUNT=3'
       },
       {
         id: 3,
         title: 'Spinning Session',
         start: new Date(2020, 1, 5, 19, 30, 0),
         end: new Date(2020, 1, 5, 20, 30, 0),
+        recurrenceRule: 'FREQ=DAILY;INTERVAL=1;COUNT=3'
       },
       {
         id: 4,
@@ -571,20 +565,22 @@ export default class Classes extends Component {
 
   render() {
     return(
-      <div style={{ height: '500pt' }}>
-        <Calendar localizer={localizer}
+      <div id="outer">
+        <div id="calendar">
+          <h1>Our Classes</h1>
+          {/* outputs calendar */}
+          <Calendar localizer={localizer}
             events={this.state.events}
             startAccessor="start"
             endAccessor="end"
+            recurrenceAccessor= "recurrenceRule"
             defaultDate={moment().toDate()}
-            onEventClick={(target, eventData, day) => console.log(eventData)}/>
+            onEventClick={(target, eventData, day) => alert(this.state.events)}
+            />
+        </div>
       </div>
-      
     );
   }
 }
- 
-//export default Classes;
-render(<Classes />, document.getElementById('root'));
 
-//export default Classes;
+render(<Classes />, document.getElementById('root'));
