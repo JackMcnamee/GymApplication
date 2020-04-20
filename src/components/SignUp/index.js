@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 import { SignInLink } from '../SignIn';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
 import '../../index.css';
 
 // Here the user can sign up to our gym application
@@ -25,6 +26,7 @@ const INITIAL_STATE = {
   email: '',
   passwordOne: '',
   passwordTwo: '',
+  isAdmin: false,
   error: null,
 };
 
@@ -37,7 +39,13 @@ class SignUpFormBase extends Component {
   }
 
   onSubmit = event => {
-    const { username, email, passwordOne } = this.state;
+    const { username, email, passwordOne, isAdmin } = this.state;
+
+    const roles = [];
+
+    if(isAdmin) {
+      roles[ROLES.ADMIN] = ROLES.ADMIN;
+    }
 
     // Firebase authentication API used to sign user up
     this.props.firebase
@@ -49,6 +57,7 @@ class SignUpFormBase extends Component {
           .set({
             username,
             email,
+            roles,
           });
       })
       .then(() => {
@@ -67,10 +76,15 @@ class SignUpFormBase extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
+  // onChangeCheckbox = event => {
+  //   this.setState({ [event.target.name]: event.target.checked});
+  // }
+
   render() {
     const {
       username, email, 
       passwordOne, passwordTwo, 
+      //isAdmin, 
       error,
     } = this.state;
 
@@ -98,6 +112,11 @@ class SignUpFormBase extends Component {
         <input name="passwordTwo" value={passwordTwo} onChange={this.onChange}
           type="password" placeholder="Confirm Password" id="text" />
         <br />
+        {/* <label>
+          Admin: 
+          <input name="isAdmin" type="checkbox" checked={isAdmin}
+            onChange={this.onChangeCheckbox} />
+        </label> */}
         <br />
         <button disabled={isInvalid} type="submit" id="button">Sign Up</button>
 

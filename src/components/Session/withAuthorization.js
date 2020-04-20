@@ -12,13 +12,14 @@ const withAuthorization = condition => Component => {
   class WithAuthorization extends React.Component {
     // uses a firebase listener to detect when the authenticated user changes
     componentDidMount() {
-      this.listener = this.props.firebase.auth.onAuthStateChanged(
+      this.listener = this.props.firebase.onAuthUserListener(
         authUser => {
           // if authorization fails go to sign in page
           if (!condition(authUser)) {
             this.props.history.push(ROUTES.SIGN_IN);
           }
         },
+        () => this.props.history.push(ROUTES.SIGN_IN),
       );
     }
 

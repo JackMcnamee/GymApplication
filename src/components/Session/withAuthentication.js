@@ -11,19 +11,22 @@ const withAuthentication = Component => {
       super(props);
 
       this.state = {
-        authUser: null,
+        authUser: JSON.parse(localStorage.getItem('authUser')),
       };
     }
 
     componentDidMount() {
       // firebase listener to get the authenticated user
-      this.listener = this.props.firebase.auth.onAuthStateChanged(
+      this.listener = this.props.firebase.onAuthUserListener(
         // called when a user is signed in or out
         authUser => {
-          authUser
-          ? this.setState({ authUser }) // signed in
-          : this.setState({ authUser: null }); // signed out
-          },
+          localStorage.setItem('authUser', JSON.stringify(authUser));
+          this.setState({ authUser });
+        }, // signed in
+        () => {
+          localStorage.removeItem('authUser');
+          this.setState({ authUser: null }); // signed out
+        },
       );
     }
 
@@ -38,7 +41,7 @@ const withAuthentication = Component => {
         <AuthUserContext.Provider value={this.state.authUser}>
           <Component {...this.props} />
         </AuthUserContext.Provider>
-      )
+      );
     }
   }
 

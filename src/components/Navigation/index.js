@@ -8,30 +8,40 @@ import Tabs from 'react-bootstrap';
 import { AuthUserContext } from '../Session';
 import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
+import * as ROLES from '../../constants/roles';
 import '../../index.css';
+import { auth } from 'firebase';
 
 // Navigation of our gym application is set up here
 
 const Navigation = () => (
-  <div>
     <AuthUserContext.Consumer>
       {/* If user authorized show NavigationAuth, else show NavigationNonAuth */}
       {authUser =>
-          authUser ? <NavigationAuth /> : <NavigationNonAuth />}
+        authUser ? (
+          <NavigationAuth authUser={authUser} />
+        ) : (
+          <NavigationNonAuth />
+        )
+      }
     </AuthUserContext.Consumer>
-  </div>
 );
 
 // what user views if they are signed in
-const NavigationAuth = () => ( 
+const NavigationAuth = ({ authUser }) => ( 
   <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
     <div>
       <Link to={ROUTES.HOME}>
         <RaisedButton label="Home" style={{ backgroundcolor: '#009688', color: '#hhh' }} />
       </Link> 
       <Link to={ROUTES.ACCOUNT}>
-        <RaisedButton label="Account" style={{ backgroundcolor: '#ffff' }} />
+        <RaisedButton label="Account" />
       </Link> 
+      {!!authUser.roles[ROLES.ADMIN] && (
+        <Link to={ROUTES.ADMIN}>
+          <RaisedButton label="Admin" style={{ backgroundcolor: '#ffff' }} />
+        </Link>
+      )}
       <Link to={ROUTES.CLASSES}>
         <RaisedButton label="Classes" style={{ backgroundcolor: '#ffff' }} />
       </Link>
