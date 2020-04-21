@@ -9,7 +9,7 @@ git clone https://github.com/JackMcnamee/GymApplication
 ```
 Enter the directory
 ```
-cd gym-app
+cd GymApplication
 ```
 Install all dependencies
 ```
