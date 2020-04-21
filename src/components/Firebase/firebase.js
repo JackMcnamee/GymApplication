@@ -44,6 +44,9 @@ class Firebase {
     doPasswordUpdate = password => 
         this.auth.currentUser.updatePassword(password);
 
+    // create a booking function
+    doCreateBooking = email => this.auth.createBooking(email);
+
     // -- Merge Auth and DB User API --
     onAuthUserListener = (next, fallback) =>
         this.auth.onAuthStateChanged(authUser => {
@@ -80,7 +83,12 @@ class Firebase {
     // gets a reference to all users
     users = () => this.db.ref('users');
 
-    
+    // -- Booking API --
+    // gets a reference to a booking by uid
+    booking = uid => this.db.ref(`bookings/${uid}`);
+
+    // gets a reference to all bookings
+    bookings = () => this.db.ref('bookings');
     
 }
 

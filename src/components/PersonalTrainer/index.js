@@ -1,99 +1,207 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input,
-    Alert,FormText } from 'reactstrap';
-
+import { Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
+import { compose } from 'recompose';
+import { withFirebase } from '../Firebase';
+import { withAuthorization, AuthUserContext } from '../Session';
 import '../../index.css';
 
 // Here the user can book a personal training session
 
-// to do: store details in database so the selected time and p.t
-// cannot be picked by other users
+// personal trainer page
+const PersonalTrainerPage = () => (
+    <div id="outer">
+        <div id="inner">
+            <h1>Book a personal trainer here</h1>
+            <Bookings />
+        </div>
+    </div>
+)
 
-class PersonalTrainer extends Component {
+// layout of form to create booking
+class PersonalTrainerBase extends Component {
 
     constructor(props) {
         super(props);
 
+        // resets state after booking
         this.state = {
             personalTrainer: '',
             time: '',
-            error: ''
+            date: '',
+            loading: false,
+            bookings: [],
         };
-
-        // this.onSubmit = this.onSubmit.bind(this);
     }
 
+    componentDidMount() {
+        this.setState({ loading: true });
+
+        // Firebase API used to create a booking
+        this.props.firebase.bookings().on('value', snapshot => {
+            const bookingObject = snapshot.val();
+
+            if(bookingObject) {
+                // convert bookings from snapshot to a list of items
+                const bookingList = Object.keys(bookingObject).map(key => ({
+                    ...bookingObject[key],
+                    uid: key,
+                }))
+
+                this.setState({ bookings: bookingList, loading: false });
+            }
+            else {
+                this.setState({ bookings: null, loading: false });
+            }
+        });
+    }
+
+    // remover listeners here to avoid memeory leaks
+    componentWillUnmount() {
+        this.props.firebase.bookings().off();
+    }
+
+    // update the personalTrainer selected by the user in the local state
     onPersonalTrainerChange = event => {
-        //const personalTrainer = e.target.value;
+        
         this.setState({ personalTrainer: event.target.value });
     };
 
+    // update the time selected by the user in the local state
     onTimeChange = event => {
-        //const time = e.target.value;
         this.setState({ time: event.target.value });
     };
 
-    onSubmit = () => {
+    // update the date selected by the user in the local state
+    onDateChange = event => {
+        this.setState({ date: event.target.value });
+    }
 
-        let today = new Date();
-        let date = today.getDate() + '-' + (today.getMonth()+1)+'-'+ today.getFullYear();
-        alert("You have booked " + this.state.personalTrainer + " at " + this.state.time + " on the " + date);
+    onCreateBooking = (event, authUser) => {
+        // alert telling the user details of their booking
+        alert("You have booked " + this.state.personalTrainer + " at " + this.state.time + " on the " + this.state.date);
+        
+        // push method creates a new booking
+        this.props.firebase.bookings().push({
+            personalTrainer: this.state.personalTrainer,
+            time: this.state.time,
+            date: this.state.date,
+            email: authUser.email,
+        });
 
-        this.props.onSubmit(this.state.personalTrainer, this.state.time);
-        //e.preventDefault();
+        this.setState({ personalTrainer: '', time: '', date: '' });
+        
+        event.preventDefault();
     };
 
+    // allow admin to remove a booking
+    onRemoveBooking = uid => {
+        this.props.firebase.booking(uid).remove();
+    }
+
     render(){
+        const {
+            personalTrainer, time, date, bookings, loading
+        } = this.state;
+
         return (
-            <div id="inner">
-                <h1>Book a Personal Training Session here</h1>
-                <Form onSubmit={this.onSubmit}>
-                    {/* Pick a personal trainer */}
-                    <FormGroup > 
-                        <Label for="personalTrainer">Personal Trainer: </Label>
-                        <Input type="select" name="personalTrainer" id="personalTrainer"
-                            value={this.state.personalTrainer} 
-                            onChange={this.onPersonalTrainerChange} 
-                            required>
-                                <option value=""> Select a P.T </option>
-                                <option>John - Cardio</option>
-                                <option>Mary - Weight Lifting</option>
-                        </Input>
-                    </FormGroup >
-                    <br />
-                    {/* Pick a time */}
-                    <FormGroup>
-                        <Label for="time">Time: </Label>
-                        <Input type="select" name="time" id="time"
-                            value={this.state.time} 
-                            onChange={this.onTimeChange} 
-                            required>
-                                <option value=""> Select a time </option>
-                                <option>8:00am - 9:00am</option>
-                                <option>9:00am - 10:00am</option>
-                                <option>10:00am - 11:00am</option>
-                                <option>11:00am - 12:00pm</option>
-                                <option>12:00pm - 13:00pm</option>
-                                <option>12:00pm - 13:00pm</option>
-                                <option>13:00pm - 14:00pm</option>
-                                <option>14:00pm - 15:00pm</option>
-                                <option>15:00pm - 16:00pm</option>
-                                <option>16:00pm - 17:00pm</option>
-                                <option>17:00pm - 18:00pm</option>
-                                <option>18:00pm - 19:00pm</option>
-                                <option>19:00pm - 20:00pm</option>
-                        </Input>
-                    </FormGroup>
-                    {this.props.message == "You have already booked this time." ?
-                        <Alert color="success">{this.props.message}</Alert>:
-                        <p>{this.props.message}</p>}
+            // associates user to the booking they made
+            <AuthUserContext.Consumer>
+                {authUser => (
                     <div>
-                        <Button color="primary" className="mt-3">Book Personal Trainer</Button>
+                        {/* inputs for user to book a personal trainer */}
+                        <Form onSubmit={event => this.onCreateBooking(event, authUser)}>
+                            {/* Pick a personal trainer */}
+                            <FormGroup > 
+                                <Label for="personalTrainer">Personal Trainer: </Label>
+                                <Input type="select" name="personalTrainer" id="personalTrainer"
+                                    value={personalTrainer} 
+                                    onChange={this.onPersonalTrainerChange} 
+                                    required>
+                                        <option value=""> Select a P.T </option>
+                                        <option>John - Cardio</option>
+                                        <option>Mary - Weight Lifting</option>
+                                </Input>
+                            </FormGroup >
+                            <br />
+                            {/* Pick a time */}
+                            <FormGroup>
+                                <Label for="time">Time: </Label>
+                                <Input type="select" name="time" id="time"
+                                    value={time} 
+                                    onChange={this.onTimeChange} 
+                                    required>
+                                        <option value=""> Select a time </option>
+                                        <option>8:00am - 9:00am</option>
+                                        <option>9:00am - 10:00am</option>
+                                        <option>10:00am - 11:00am</option>
+                                        <option>11:00am - 12:00pm</option>
+                                        <option>12:00pm - 13:00pm</option>
+                                        <option>12:00pm - 13:00pm</option>
+                                        <option>13:00pm - 14:00pm</option>
+                                        <option>14:00pm - 15:00pm</option>
+                                        <option>15:00pm - 16:00pm</option>
+                                        <option>16:00pm - 17:00pm</option>
+                                        <option>17:00pm - 18:00pm</option>
+                                        <option>18:00pm - 19:00pm</option>
+                                        <option>19:00pm - 20:00pm</option>
+                                </Input>
+                            </FormGroup>
+                            <br />
+                            {/* Pick a date */}
+                            <FormGroup>
+                                <Label for="date">Date: </Label>
+                                <Input type="date" name="date" id="date"
+                                    min="<?php echo $today; ?>"
+                                    value={date} 
+                                    onChange={this.onDateChange} 
+                                    required>
+                                </Input>
+                            </FormGroup>
+                            <br />
+                                <Button color="primary" type="submit">Book Personal Trainer</Button>
+                        </Form>
                     </div>
-                </Form>
-            </div>
+                )}
+            </AuthUserContext.Consumer>
         );
     }
 }
 
-export default PersonalTrainer;
+// display booking details (called in admin/index.js)
+const BookingItem = ({ booking, onRemoveBooking }) => (
+    <div id="inner">
+        <ul>
+            <li>
+                <span>
+                    <strong>Email: </strong> {booking.email}
+                </span>
+                <br />
+                <span>
+                    <strong>Personal Trainer: </strong> {booking.personalTrainer}
+                </span>
+                <br />
+                <span>
+                    <strong>Time: </strong> {booking.time} 
+                </span>
+                <br />
+                <span>
+                    <strong>Date: </strong> {booking.date}
+                </span>
+                <br />
+                <button type="button" onClick={() => onRemoveBooking(booking.uid)}>
+                    Delete Booking
+                </button>
+            </li>
+        </ul>
+    </div>
+);
+
+const Bookings = withFirebase(PersonalTrainerBase);
+
+const condition = authUser => !!authUser;
+
+export default compose(
+    withAuthorization(condition),
+)(PersonalTrainerPage);
+
+export { BookingItem };
