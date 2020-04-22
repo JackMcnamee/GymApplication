@@ -4,6 +4,7 @@ import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import Firebase, { FirebaseContext } from './components/Firebase';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Ensures that firebase is only instatiated once
 // allows all components to access the firebase instance
