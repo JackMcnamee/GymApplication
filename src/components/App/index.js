@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, } from 'react-router-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import darkBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+//import muiTheme from 'material-ui/styles/muiTheme';
+import { MuiThemeProvider, muiTheme } from 'material-ui/styles';
 
 import Navigation from '../Navigation';
 import SignUpPage from '../SignUp';
@@ -19,10 +21,11 @@ import { withAuthentication } from '../Session';
 // Session handling done here
 
 const App = () => (
-  <MuiThemeProvider>
+  <MuiThemeProvider muiTheme={muiTheme}>
     <Router>
-      <div>
+      {/* <div> */}
         {/* determines which pages user is authorised to see */}
+        
         <Navigation />
         <hr />
         <Route exact path={ROUTES.HOME} component={HomePage} />
@@ -34,7 +37,7 @@ const App = () => (
         <Route exact path={ROUTES.CLASSES} component={ClassesPage} />
         <Route exact path={ROUTES.PERSONAL_TRAINER} component={PersonalTrainerPage} />
         <Route exact path={ROUTES.STORE} component={StorePage} />
-      </div>
+      {/* </div> */}
     </Router>
   </MuiThemeProvider>
 

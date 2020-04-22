@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
+import { Form, FormGroup, Label, Input, Alert } from 'reactstrap';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
 import { withAuthorization, AuthUserContext } from '../Session';
+import Button from '@material-ui/core/Button';
+import { MuiThemeProvider, muiTheme } from 'material-ui/styles';
 import '../../index.css';
 
 // Here the user can book a personal training session
 
 // personal trainer page
 const PersonalTrainerPage = () => (
+    <MuiThemeProvider>
     <div id="outer">
         <div id="inner">
-            <h1>Book a personal trainer here</h1>
+            <h1>Book a Personal Training Session here!</h1>
             <Bookings />
         </div>
     </div>
+    </MuiThemeProvider>
 )
 
 // layout of form to create booking
@@ -78,7 +82,7 @@ class PersonalTrainerBase extends Component {
 
     onCreateBooking = (event, authUser) => {
         // alert telling the user details of their booking
-        alert("You have booked " + this.state.personalTrainer + " at " + this.state.time + " on the " + this.state.date);
+        alert("You have booked " + this.state.personalTrainer + " at " + this.state.time + " on the " + this.state.date + "!");
         
         // push method creates a new booking
         this.props.firebase.bookings().push({
@@ -112,7 +116,7 @@ class PersonalTrainerBase extends Component {
                         <Form onSubmit={event => this.onCreateBooking(event, authUser)}>
                             {/* Pick a personal trainer */}
                             <FormGroup > 
-                                <Label for="personalTrainer">Personal Trainer: </Label>
+                                <Label for="personalTrainer">Pick a Personal Trainer: </Label>
                                 <Input type="select" name="personalTrainer" id="personalTrainer"
                                     value={personalTrainer} 
                                     onChange={this.onPersonalTrainerChange} 
@@ -125,7 +129,7 @@ class PersonalTrainerBase extends Component {
                             <br />
                             {/* Pick a time */}
                             <FormGroup>
-                                <Label for="time">Time: </Label>
+                                <Label for="time">Choose a Time: </Label>
                                 <Input type="select" name="time" id="time"
                                     value={time} 
                                     onChange={this.onTimeChange} 
@@ -149,7 +153,7 @@ class PersonalTrainerBase extends Component {
                             <br />
                             {/* Pick a date */}
                             <FormGroup>
-                                <Label for="date">Date: </Label>
+                                <Label for="date">Choose a Date: </Label>
                                 <Input type="date" name="date" id="date"
                                     min="<?php echo $today; ?>"
                                     value={date} 
@@ -158,7 +162,7 @@ class PersonalTrainerBase extends Component {
                                 </Input>
                             </FormGroup>
                             <br />
-                                <Button color="primary" type="submit">Book Personal Trainer</Button>
+                                <Button type="submit" variant="contained" size="lg">Book Personal Trainer</Button>
                         </Form>
                     </div>
                 )}
@@ -169,7 +173,7 @@ class PersonalTrainerBase extends Component {
 
 // display booking details (called in admin/index.js)
 const BookingItem = ({ booking, onRemoveBooking }) => (
-    <div id="inner">
+    <div id="bookingsList">
         <ul>
             <li>
                 <span>
@@ -188,9 +192,11 @@ const BookingItem = ({ booking, onRemoveBooking }) => (
                     <strong>Date: </strong> {booking.date}
                 </span>
                 <br />
-                <button type="button" onClick={() => onRemoveBooking(booking.uid)}>
+                <Button type="button" variant="contained" color="secondary" size="small" onClick={() => onRemoveBooking(booking.uid)}>
                     Delete Booking
-                </button>
+                </Button>
+                <br />
+                <br />
             </li>
         </ul>
     </div>

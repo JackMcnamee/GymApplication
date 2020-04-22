@@ -48,7 +48,7 @@ class Store extends React.Component {
     return(
       <div className="App" id="outer">
         <div id="store">
-          <h2>Our Store</h2>
+          <h1>Our Store</h1>
           <Stores myItems={this.state.myItems}></Stores>
         </div>
       </div>

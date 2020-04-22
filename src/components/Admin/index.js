@@ -87,7 +87,7 @@ class AdminPage extends Component {
 
                     <UserList users={users} />
 
-                    <h2>Personal Training Sessions booked</h2>
+                    <h2>Personal Training Sessions booked by users</h2>
 
                     {loading && <div>Loading...</div>}
             
@@ -105,17 +105,18 @@ class AdminPage extends Component {
 
 // display user details
 const UserList = ({ users }) => (
-    <div id="inner">
+    <div id="usersList">
         <ul>
             {users.map(user => (
                 <li key={user.uid}>
                     <span>
                         <strong>Username:</strong> {user.username}
                     </span>
-                    <br />
                     <span>
-                        <strong>E-Mail:</strong> {user.email}
+                        <strong>, E-Mail:</strong> {user.email}
                     </span>
+                    <br />
+                    <br />
                 </li>
             ))}
             <br />
